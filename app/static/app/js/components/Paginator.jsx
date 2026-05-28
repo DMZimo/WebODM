@@ -99,10 +99,12 @@ class Paginator extends React.Component {
     pageSizeChanged = size => {
         const parsed = Math.min(100, parseInt(size));
         if (isNaN(parsed) || parsed < 1) return;
+        const firstItem = (this.props.currentPage - 1) * this.state.pageSize + 1;
+        const equivalentPage = Math.ceil(firstItem / parsed);
         this.setState({ pageSize: parsed, customPageSizeInput: "" });
         setTimeout(() => {
             Storage.setItem("project_page_size", parsed);
-            this.props.history.push({ search: this.getQueryForPage(1, parsed) });
+            this.props.history.push({ search: this.getQueryForPage(equivalentPage, parsed) });
         }, 0);
     }
 
